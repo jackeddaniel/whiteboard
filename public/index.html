@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>White Board in HTML</title>
+    <style>
+        /* CSS styles go here */
+    </style>
+</head>
+<body>
+    <center>
+        <canvas id="canvasBoard"></canvas>
+        <div id="controls">
+            <button onclick="clearCanvas()">Clear</button>
+            <label for="cursorColor">Cursor Color:</label>
+            <select id="cursorColor" onchange="changeCursorColor()">
+                <!-- Color options go here -->
+            </select>
+        </div>
+        <script>
+            /* JavaScript code goes here */
+
+            function sizeCanvas() {
+                canvasElem.width = window.innerWidth;
+                canvasElem.height = window.innerHeight - 50;
+            }
+
+            sizeCanvas();
+
+            window.addEventListener("resize", sizeCanvas);
+
+            var pos = { x: 0, y: 0};
+
+            function setPos(e) {
+                pos.x = e.clientX - canvasElem.offsetLeft;
+                pos.y = e.client& - canvasElem.offsetTop;
+            }
+
+            function draw(e) {
+                if(e.buttons !== 1) {
+                    return;
+                }
+
+                canvasContext.beginPath();
+                canvasContext.lineWidth = 10;
+                canvasContext.strokeStyle = cursorColor;
+
+                canvasContext.moveTo(pos.x, pos.y);
+                setPos(e);
+                canvasContext.lineTo(pos.x, pos.y);
+                canvasContext.stroke();
+            }
+
+            canvasElem.addEventListener("mousemove", draw);
+            canvasElem.addEventListener("mousedown", setPos);
+            canvasElem.addEventListener("mouseenter", setPos);
+        </script>
+    </center>
+</body>
+</html>
+
