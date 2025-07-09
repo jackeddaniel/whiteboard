@@ -1,62 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>White Board in HTML</title>
-    <style>
-        /* CSS styles go here */
-    </style>
+  <meta charset="UTF-8" />
+  <title>Live Whiteboard</title>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: #f4f4f4;
+    }
+
+    canvas {
+      border: 2px solid #333;
+      margin-top: 20px;
+      background: #fff;
+    }
+  </style>
 </head>
 <body>
-    <center>
-        <canvas id="canvasBoard"></canvas>
-        <div id="controls">
-            <button onclick="clearCanvas()">Clear</button>
-            <label for="cursorColor">Cursor Color:</label>
-            <select id="cursorColor" onchange="changeCursorColor()">
-                <!-- Color options go here -->
-            </select>
-        </div>
-        <script>
-            /* JavaScript code goes here */
+  <h2>Live Whiteboard</h2>
+  <canvas id="canvas" width="800" height="600"></canvas>
 
-            function sizeCanvas() {
-                canvasElem.width = window.innerWidth;
-                canvasElem.height = window.innerHeight - 50;
-            }
+  <!-- 👇 Load Socket.IO client from the server -->
+  <script src="/socket.io/socket.io.js"></script>
 
-            sizeCanvas();
-
-            window.addEventListener("resize", sizeCanvas);
-
-            var pos = { x: 0, y: 0};
-
-            function setPos(e) {
-                pos.x = e.clientX - canvasElem.offsetLeft;
-                pos.y = e.client& - canvasElem.offsetTop;
-            }
-
-            function draw(e) {
-                if(e.buttons !== 1) {
-                    return;
-                }
-
-                canvasContext.beginPath();
-                canvasContext.lineWidth = 10;
-                canvasContext.strokeStyle = cursorColor;
-
-                canvasContext.moveTo(pos.x, pos.y);
-                setPos(e);
-                canvasContext.lineTo(pos.x, pos.y);
-                canvasContext.stroke();
-            }
-
-            canvasElem.addEventListener("mousemove", draw);
-            canvasElem.addEventListener("mousedown", setPos);
-            canvasElem.addEventListener("mouseenter", setPos);
-        </script>
-    </center>
+  <!-- 👇 Your custom drawing logic -->
+  <script src="/client.js"></script>
 </body>
 </html>
 

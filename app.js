@@ -1,17 +1,30 @@
-const express = require('express')
-const app = express()
-const port = 7000
+const express = require('express');
+const http = require('http');
+const { Server } = require('socket.io');
 
-const path = require('path')
+const app = express();
+const server = http.createServer(app);
+const io = new Server(server);
 
-app.use(express.static(path.join(__dirname, 'public')));
 
+// Serve static files from the "public" directory
+app.use(express.static('public'));
 
+io.on('connection', (socket) => {
+  console.log('A user connected');
 
-app.get('/', (req,res) => {
-    res.send(path.join(__dirname,'public','index.html'));
+  socket.on('draw', (data) => {
+    // Broadcast the draw event to all other clients
+    socket.broadcast.emit('draw', data);
+  });
+
+  socket.on('disconnect', () => {
+    console.log('A user disconnected');
+  });
 });
 
-app.listen(port, () => {
-    console.log(`listening on port 7000`)
+const PORT = 3000;
+server.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
+
